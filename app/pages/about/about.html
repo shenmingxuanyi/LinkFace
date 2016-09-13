@@ -1,0 +1,52 @@
+<ion-content class="about">
+
+
+    <ion-grid no-padding>
+        <ion-row no-padding>
+            <ion-col no-padding>
+                <ion-card style="position: relative;overflow: visible;">
+                    <img [src]="selfie_file||'image/default.png'">
+                    <button style="bottom: -28px;" fab fab-center fab-bottom (click)="camera('selfie_file')">
+                        <ion-icon name="camera"></ion-icon>
+                    </button>
+
+                </ion-card>
+            </ion-col>
+            <ion-col no-padding>
+                <ion-card style="position: relative;overflow: visible;">
+                    <img [src]="historical_selfie_file||'image/default.png'">
+                    <button style="bottom: -28px;" fab fab-center fab-bottom
+                            (click)="camera('historical_selfie_file')">
+                        <ion-icon name="camera"></ion-icon>
+                    </button>
+
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+
+    <div text-center margin-top [hidden]="!confidence">
+        <div style=";position: relative;overflow: hidden;width: 50vmin;height: 50vmin;border:5vmin solid rgba(51,153,255,.45);display: inline-block;-webkit-border-radius: 50%;-moz-border-radius: 50%;border-radius: 50%;">
+
+            <span style="line-height: 40vmin;font-size: 12vmin;font-weight: bold;color: rgb(51,153,255);text-shadow: 0 0 2vmin rgba(255,255,255,1)">
+                {{confidence&&confidence.split(".")[0]}}.<span style="font-size: 7.5vmin;">{{confidence&&confidence.split(".")[1]}}%</span>
+            </span>
+
+            <div [ngStyle]="{top: (100-confidence)+'%'}"
+                 style="-webkit-transition: all 500ms;-moz-transition: all 500ms;-ms-transition: all 500ms;-o-transition: all 500ms;transition: all 500ms;-webkit-border-radius: 50%;-moz-border-radius: 50%;border-radius: 50%;;position: absolute;left: 0;right: 0;top:0;bottom: 0;background:rgba(51,153,255,.25)"></div>
+
+        </div>
+    </div>
+
+
+    <div [hidden]="!uploading" class="all-transition folded-corner"
+         style="text-align: center;position: fixed;left: 0;right: 0;top: 0;bottom: 0;background-color: rgba(0,0,0,.35);">
+    </div>
+
+    <button fab fab-center fab-bottom fab-fixed [ngClass]="{'fab-fixed-loading':uploading}"
+            class="fab-fixed-transition" (click)="verification()">
+        <ion-icon name="cloud-upload"></ion-icon>
+    </button>
+
+</ion-content>
