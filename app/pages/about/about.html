@@ -29,7 +29,7 @@
     <div text-center margin-top [hidden]="!confidence">
         <div style=";position: relative;overflow: hidden;width: 50vmin;height: 50vmin;border:5vmin solid rgba(51,153,255,.45);display: inline-block;-webkit-border-radius: 50%;-moz-border-radius: 50%;border-radius: 50%;">
 
-            <span style="line-height: 40vmin;font-size: 12vmin;font-weight: bold;color: rgb(51,153,255);text-shadow: 0 0 2vmin rgba(255,255,255,1)">
+            <span style="line-height: 40vmin;font-size: 12vmin;font-weight: bold;color: rgb(51,153,255);-moz-text-shadow: 0 0 2vmin rgba(255,255,255,1);-webkit-text-shadow: 0 0 2vmin rgba(255,255,255,1);text-shadow: 0 0 2vmin rgba(255,255,255,1)">
                 {{confidence&&confidence.split(".")[0]}}.<span style="font-size: 7.5vmin;">{{confidence&&confidence.split(".")[1]}}%</span>
             </span>
 

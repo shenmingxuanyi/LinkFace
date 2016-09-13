@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {NavController, ToastController, LoadingController} from 'ionic-angular';
-import {Camera, ImageResizerOptions, ImageResizer} from "ionic-native";
+import {NavController, ToastController, LoadingController, ActionSheetController} from 'ionic-angular';
+import {Camera, ImageResizerOptions, ImageResizer, ImagePicker} from "ionic-native";
 import {LinkFaceVerfication} from "../../util/linkface-verfication";
 
 @Component({
@@ -16,38 +16,93 @@ export class AboutPage {
 
     uploading: boolean = false;
 
-    constructor(private navCtrl: NavController, public loadingCtrl: LoadingController, public toastCtrl: ToastController, public linkFaceVerfication: LinkFaceVerfication) {
+    constructor(private navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public loadingCtrl: LoadingController, public toastCtrl: ToastController, public linkFaceVerfication: LinkFaceVerfication) {
     }
 
 
     camera(_image): void {
 
-        Camera.getPicture({})
-            .then((imageData)=> {
 
-                let options = {
-                    uri: imageData,
-                    folderName: 'ImageResize',
-                    quality: 90,
-                    width: 1280,
-                    height: 1280,
-                    fileName: imageData.substr(imageData.lastIndexOf('/') + 1)
-                } as ImageResizerOptions;
+        let actionSheet = this.actionSheetCtrl.create({
+            title: '选择获取照片的方式',
+            buttons: [
+                {
+                    text: '相机',
+                    icon: 'camera',
+                    role: 'destructive',
+                    handler: () => {
+                        this.choiceCamera(_image);
+                    }
+                },
+                {
+                    text: '图库',
+                    icon: 'images',
+                    role: 'destructive',
+                    handler: () => {
+                        this.choiceImageLib(_image);
+                    }
+                },
+                {
+                    text: '取消',
+                    icon: 'close',
+                    role: 'cancel',
+                    handler: () => {
+                        console.log('Cancel clicked');
+                    }
+                }
+            ]
+        });
 
-                ImageResizer
-                    .resize(options)
-                    .then(
-                        (filePath: string) => {
-                            this[_image] = filePath + "";
-                        },
-                        () => {
-                            this.toastMessage("缩小图像时出现错误了")
-                        }
-                    );
-            });
+        actionSheet.present();
+
 
     }
 
+
+    choiceCamera(_image) {
+        Camera.getPicture({})
+            .then((imageData)=> {
+                this.imageResize(_image, imageData);
+            });
+    }
+
+    choiceImageLib(_image) {
+        ImagePicker.getPictures({maximumImagesCount: 1})
+            .then((results) => {
+                if (results && results.length > 0) {
+                    if (results[0]) {
+                        this.imageResize(_image, results[0]);
+                    }
+                }
+
+            }, (err) => {
+                this.toastMessage("选择图像出现错误");
+            });
+    }
+
+
+    imageResize(_image, imageData) {
+        let options = {
+            uri: imageData,
+            folderName: 'ImageResize',
+            quality: 90,
+            width: 1280,
+            height: 1280,
+            fileName: imageData.substr(imageData.lastIndexOf('/') + 1)
+        } as ImageResizerOptions;
+
+        ImageResizer
+            .resize(options)
+            .then(
+                (filePath: string) => {
+                    this[_image] = filePath + "";
+                    this.confidence = null;
+                },
+                () => {
+                    this.toastMessage("缩小图像时出现错误了")
+                }
+            );
+    }
 
     verification() {
 
@@ -56,7 +111,7 @@ export class AboutPage {
         }
 
         if (null == this.selfie_file || null == this.historical_selfie_file) {
-            this.toastMessage("请拍照片");
+            this.toastMessage("请拍照片后者选择图像");
             return;
         }
 
