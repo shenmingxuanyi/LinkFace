@@ -26,15 +26,25 @@
     </ion-grid>
 
 
-    <div text-center margin-top [hidden]="!confidence">
-        <div style=";position: relative;overflow: hidden;width: 50vmin;height: 50vmin;border:5vmin solid rgba(51,153,255,.45);display: inline-block;-webkit-border-radius: 50%;-moz-border-radius: 50%;border-radius: 50%;">
+    <div text-center margin-top>
+        <div style=";position: relative;overflow: hidden;width: 50vmin;height: 50vmin;display: inline-block;">
 
-            <span style="line-height: 40vmin;font-size: 12vmin;font-weight: bold;color: rgb(51,153,255);-moz-text-shadow: 0 0 2vmin rgba(255,255,255,1);-webkit-text-shadow: 0 0 2vmin rgba(255,255,255,1);text-shadow: 0 0 2vmin rgba(255,255,255,1)">
-                {{confidence&&confidence.split(".")[0]}}.<span style="font-size: 7.5vmin;">{{confidence&&confidence.split(".")[1]}}%</span>
+            <span [ngStyle]="{color: !confidence?'rgba(204,204,204,.8)':(confidence>=90?'rgba(51,255,51,.8)':(confidence>=80?'rgba(255,204,51,.8)':'rgba(255,51,51,.8)'))}"
+                  style="line-height: 50vmin;font-size: 12vmin;font-weight: bold;color: rgba(204,204,204,.8);-moz-text-shadow: 0 0 2vmin rgba(255,255,255,1);-webkit-text-shadow: 0 0 2vmin rgba(255,255,255,1);text-shadow: 0 0 2vmin rgba(255,255,255,1)">
+                {{confidence&&confidence.split(".")[0]||'0'}}.<span style="font-size: 7.5vmin;">{{confidence&&confidence.split(".")[1]||'0'}}%</span>
             </span>
 
-            <div [ngStyle]="{top: (100-confidence)+'%'}"
-                 style="-webkit-transition: all 500ms;-moz-transition: all 500ms;-ms-transition: all 500ms;-o-transition: all 500ms;transition: all 500ms;-webkit-border-radius: 50%;-moz-border-radius: 50%;border-radius: 50%;;position: absolute;left: 0;right: 0;top:0;bottom: 0;background:rgba(51,153,255,.25)"></div>
+            <div style="position: absolute;left: 0;right: 0;top: 0;bottom: 0;">
+                <svg style="width: 100%;height: 100%;" width="512" height="512">
+                    <circle cx="50%" cy="50%" r="40%" stroke-width="10%" stroke="rgba(204,204,204,.25)"
+                            fill="none"></circle>
+                    <circle cx="50%" cy="50%" r="40%" stroke-width="10%" fill="none"
+                            stroke="rgba(204,204,204,.25)"
+                            [attr.stroke]="!confidence?'rgba(204,204,204,.5)':(confidence>=90?'rgba(51,255,51,.75)':(confidence>=80?'rgba(255,204,51,.75)':'rgba(255,51,51,.75)'))"
+                            style=";-webkit-transition: all 600ms;-moz-transition: all 600ms;-ms-transition: all 600ms;-o-transition: all 600ms;transition: all 600ms;"
+                            [attr.stroke-dasharray]="80*3.1415926*(confidence||0)/100+'% 3140%'"></circle>
+                </svg>
+            </div>
 
         </div>
     </div>

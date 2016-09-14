@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, ToastController, LoadingController, ActionSheetController} from 'ionic-angular';
+import {NavController, ToastController, LoadingController, ActionSheetController, Toast} from 'ionic-angular';
 import {Camera, ImageResizerOptions, ImageResizer, ImagePicker} from "ionic-native";
 import {LinkFaceVerfication} from "../../util/linkface-verfication";
 
@@ -12,16 +12,19 @@ export class AboutPage {
     confidence: string;
 
     selfie_file: string;
+
     historical_selfie_file: string;
 
     uploading: boolean = false;
 
     constructor(private navCtrl: NavController, public actionSheetCtrl: ActionSheetController, public loadingCtrl: LoadingController, public toastCtrl: ToastController, public linkFaceVerfication: LinkFaceVerfication) {
+
     }
 
 
     camera(_image): void {
 
+        this.choiceCamera(_image);
 
         let actionSheet = this.actionSheetCtrl.create({
             title: '选择获取照片的方式',
@@ -53,7 +56,7 @@ export class AboutPage {
             ]
         });
 
-        actionSheet.present();
+        // actionSheet.present();
 
 
     }
@@ -63,6 +66,9 @@ export class AboutPage {
         Camera.getPicture({})
             .then((imageData)=> {
                 this.imageResize(_image, imageData);
+            })
+            .catch(()=> {
+                this.toastMessage("启动相机出现错误");
             });
     }
 
@@ -106,6 +112,7 @@ export class AboutPage {
 
     verification() {
 
+
         if (this.uploading) {
             return;
         }
@@ -116,6 +123,8 @@ export class AboutPage {
         }
 
         this.uploading = true;
+
+        this.confidence = null;
 
         this.linkFaceVerfication.historicalSelfieVerification(this.selfie_file, this.historical_selfie_file, true, true)
             .then(result=> {
@@ -131,12 +140,14 @@ export class AboutPage {
 
 
     toastMessage(message) {
+
         let toast = this.toastCtrl.create({
             message: message,
             duration: 3000,
             position: 'top',
             cssClass: "toast-danger"
         });
+
         toast.present();
     }
 }
