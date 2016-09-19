@@ -1,8 +1,12 @@
+/***
+ * @author 赵俊明
+ */
+
 import {Injectable, Component} from "@angular/core";
 import {XHRMultipartFileUpload} from "./xhr-multipart-upload";
 import {Storage, LocalStorage} from "ionic-angular";
 
-
+//400 错误码对应信息
 const ERROR_MAPPING = {
     "ENCODING_ERROR": "参数非UTF-8编码",
     "DOWNLOAD_TIMEOUT": "网络地址图片获取超时",
@@ -24,33 +28,40 @@ const ERROR_MAPPING = {
 @Injectable()
 export class LinkFaceVerfication {
 
+    //普通照片比对URL
     private historicalSelfieVerificationURL = "https://v1-auth-api.visioncloudapi.com/identity/historical_selfie_verification";
 
+    //公安水印照片与普通照片比对URL
     private selfieWatermarkVerificationURL = "https://v1-auth-api.visioncloudapi.com/identity/selfie_watermark_verification";
 
     private apiId: string;
 
     private apiSecret: string;
 
+    //LocalStorage
     private storage = new Storage(LocalStorage);
 
     constructor() {
-        this.storage.get("apiId")
+
+        this.getApiId()
             .then(apiId=> {
                 this.apiId = apiId || "6b666502c4324026b8604c8001a2cd14";
-            }).catch(()=> {
-            this.apiId = "6b666502c4324026b8604c8001a2cd14";
-        });
+            })
+            .catch(()=> {
+                this.apiId = "6b666502c4324026b8604c8001a2cd14";
+            });
 
-        this.storage.get("apiSecret")
+        this.getApiSecret()
             .then(apiSecret=> {
                 this.apiSecret = apiSecret || "28cf8b8693e54d0b930d0a5089831841";
-            }).catch(()=> {
-            this.apiSecret = "28cf8b8693e54d0b930d0a5089831841";
-        });
+            })
+            .catch(()=> {
+                this.apiSecret = "28cf8b8693e54d0b930d0a5089831841";
+            });
 
     }
 
+    //普通照片比对
     public historicalSelfieVerification(selfie_file: string, historical_selfie_file: string, selfie_auto_rotate: boolean = true, historical_selfie_auto_rotate: boolean = true): Promise<any> {
 
         let params = {
@@ -82,6 +93,7 @@ export class LinkFaceVerfication {
 
     }
 
+    //公安水印照片与普通照片比对
     public selfieWatermarkVerification(selfie_file: string, watermark_picture_file: string): Promise<any> {
         let params = {api_id: this.apiId, api_secret: this.apiSecret};
         let files = []
@@ -121,6 +133,15 @@ export class LinkFaceVerfication {
             return true;
         }
         return false;
+    }
+
+
+    getApiId(): Promise<string> {
+        return this.storage.get("apiId");
+    }
+
+    getApiSecret(): Promise<string> {
+        return this.storage.get("apiSecret");
     }
 
 }

@@ -1,2 +1,90 @@
 .contact {
+  background: #fefefe;
+  background: url("../../image/page-bg.jpg");
+
+  .logo-header {
+
+    background: #444;
+    background-image: url("../../image/advance-card-map-madison.png");
+    -webkit-background-size: 100% auto;
+    background-size: 100% auto;
+
+    background-attachment: fixed;
+
+    background-position: 0 0;
+
+    -webkit-animation: logo-header-keyframe 15s linear 0s infinite alternate;
+    -o-animation: logo-header-keyframe 15s linear 0s infinite alternate;
+    animation: logo-header-keyframe 15s linear 0s infinite alternate;
+
+  }
+
+  .logo-image {
+    width: 61.8%;
+
+    -webkit-animation: logo-image-keyframe 3s linear 0s infinite alternate;
+    -o-animation: logo-image-keyframe 3s linear 0s infinite alternate;
+    animation: logo-image-keyframe 3s linear 0s infinite alternate;
+
+  }
+
+}
+
+@-webkit-keyframes logo-header-keyframe {
+  0% {
+    background-size: 100% auto;
+  }
+  100% {
+    background-size: 150% auto;
+  }
+}
+
+@-moz-keyframes logo-header-keyframe {
+  0% {
+    background-size: 100% auto;
+  }
+  100% {
+    background-size: 150% auto;
+  }
+}
+
+@keyframes logo-header-keyframe {
+  0% {
+    background-size: 100% auto;
+  }
+  100% {
+    background-size: 150% auto;
+  }
+}
+
+@-webkit-keyframes logo-image-keyframe {
+
+  0% {
+    -webkit-filter: drop-shadow(0px 0px 0px rgba(255, 255, 255, .75));
+  }
+
+  100% {
+    -webkit-filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, .75));
+  }
+
+}
+
+@-moz-keyframes logo-image-keyframe {
+  0% {
+    -moz-filter: drop-shadow(0px 0px 0px rgba(255, 255, 255, .75));
+  }
+
+  100% {
+    -moz-filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, .75));
+  }
+}
+
+@keyframes logo-image-keyframe {
+  0% {
+    filter: drop-shadow(0px 0px 0px rgba(255, 255, 255, .75));
+  }
+
+  100% {
+    filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, .75));
+  }
 }

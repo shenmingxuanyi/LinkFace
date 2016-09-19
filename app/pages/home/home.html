@@ -1,20 +1,143 @@
-<ion-header>
-    <ion-navbar>
-        <ion-title>身份验证</ion-title>
-    </ion-navbar>
-</ion-header>
+<ion-content class="home">
 
-<ion-content padding class="home">
 
-    <h2>Welcome to Ionic!</h2>
-    <p>
-        This starter project comes with simple tabs-based layout for apps
-        that are going to primarily use a Tabbed UI.
-    </p>
-    <p>
-        Take a look at the <code>app/</code> directory to add or change tabs,
-        update any existing page or create new pages.
-    </p>
+    <ion-grid no-padding margin-top>
+        <ion-row no-padding center>
+            <ion-col width-33 no-padding stretch>
+                <ion-card style="position: relative;overflow: visible;height: 100%;">
+                    <img [src]="selfie_file||'image/default.png'">
+                    <button [ngClass]="{'fab-loading':cardReading}"
+                            class="fab-fixed-transition" style="bottom: -28px;" fab fab-center fab-bottom
+                            (click)="readIDCard();">
+                        <ion-icon name="card"></ion-icon>
+                    </button>
+                </ion-card>
+            </ion-col>
+            <ion-col width-33 no-padding stretch>
+                <ion-card style="position: relative;overflow: visible;height: 100%;">
+                    <img [src]="historical_selfie_file||'image/default.png'">
+                    <button style="bottom: -28px;" fab fab-center fab-bottom
+                            (click)="camera('historical_selfie_file')">
+                        <ion-icon name="camera"></ion-icon>
+                    </button>
+
+                </ion-card>
+            </ion-col>
+            <ion-col width-34 no-padding>
+                <div text-center style="width: 100%;height: 0;padding-bottom: 100%;position: relative">
+
+                    <span [ngStyle]="{color: !confidence?'rgba(204,204,204,.8)':(confidence>=90?'rgba(51,204,51,.8)':(confidence>=80?'rgba(255,204,51,.8)':'rgba(255,51,51,.8)'))}"
+                          style="line-height: 34vw;font-size: 8vw;font-weight: bold;color: rgba(204,204,204,.8);-moz-text-shadow: 0 0 2vw rgba(255,255,255,1);-webkit-text-shadow: 0 0 2vw rgba(255,255,255,1);text-shadow: 0 0 2vw rgba(255,255,255,1)">
+                        {{confidence&&confidence.split(".")[0]||'0'}}.<span style="font-size: 5vw;">{{confidence&&confidence.split(".")[1]||'00'}}%</span>
+                    </span>
+
+                    <div style="position: absolute;left: 0;right: 0;top: 0;bottom: 0;">
+                        <svg style="width: 100%;height: 100%;" width="512" height="512">
+                            <circle cx="50%" cy="50%" r="40%" stroke-width="10%" stroke="rgba(204,204,204,.25)"
+                                    fill="none"></circle>
+                            <circle cx="50%" cy="50%" r="40%" stroke-width="10%" fill="none"
+                                    stroke="rgba(204,204,204,.25)"
+                                    [attr.stroke]="!confidence?'rgba(204,204,204,.5)':(confidence>=90?'rgba(51,204,51,.75)':(confidence>=80?'rgba(255,204,51,.75)':'rgba(255,51,51,.75)'))"
+                                    style=";-webkit-transition: all 600ms;-moz-transition: all 600ms;-ms-transition: all 600ms;-o-transition: all 600ms;transition: all 600ms;"
+                                    [attr.stroke-dasharray]="80*3.1415926*(confidence||0)/100+'% 3140%'"></circle>
+                        </svg>
+                    </div>
+                </div>
+
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+
+    <ion-grid margin-top no-padding>
+
+        <ion-card style="position: relative;overflow: visible;background-color: transparent;">
+
+            <ion-row no-padding>
+                <ion-col no-padding>
+                    <ion-list style="background-color: transparent;">
+
+                        <ion-item style="background-color: transparent;">
+                            <ion-icon name="radio-button-on" primary></ion-icon>
+                            姓名: <span style="font-weight: bold;">{{idCardInfo?.name}}</span>
+                        </ion-item>
+                        <ion-row no-padding>
+                            <ion-col no-padding>
+                                <ion-item style="background-color: transparent;">
+                                    <ion-icon name="radio-button-on" primary></ion-icon>
+                                    性别：<span style="font-weight: bold;">{{idCardInfo?.gender}}</span> <span
+                                        padding></span>
+                                </ion-item>
+                            </ion-col>
+                            <ion-col no-padding>
+                                <ion-item style="background-color: transparent;">
+                                    <ion-icon name="radio-button-on" primary></ion-icon>
+                                    民族：<span style="font-weight: bold;">{{idCardInfo?.nation}}</span>
+                                </ion-item>
+                            </ion-col>
+                        </ion-row>
+                        <ion-item style="background-color: transparent;">
+                            <ion-icon name="radio-button-on" primary></ion-icon>
+                            出生日期：<span style="font-weight: bold;">{{idCardInfo?.birthday}}</span>
+                        </ion-item>
+                        <ion-item style="background-color: transparent;">
+                            <ion-icon name="radio-button-on" primary></ion-icon>
+                            住址: <span style="font-weight: bold;">{{idCardInfo?.address}}</span>
+                        </ion-item>
+                        <ion-item style="background-color: transparent;">
+                            <ion-icon name="radio-button-on" primary></ion-icon>
+                            身份证号：<span style="font-weight: bold;">{{idCardInfo?.cardNum}}</span>
+                        </ion-item>
+                        <ion-item style="background-color: transparent;">
+                            <ion-icon name="radio-button-on" primary></ion-icon>
+                            发证日期：<span style="font-weight: bold;">{{idCardInfo?.validStartDate}}--{{idCardInfo?.validEndDate}}</span>
+                        </ion-item>
+                        <ion-item style="background-color: transparent;">
+                            <ion-icon name="radio-button-on" primary></ion-icon>
+                            发证机关：<span style="font-weight: bold;">{{idCardInfo?.registInstitution}}</span>
+                        </ion-item>
+                    </ion-list>
+                </ion-col>
+            </ion-row>
+
+
+        </ion-card>
+
+    </ion-grid>
+
+
+    <div text-center margin-top style="display: none">
+        <div style=";position: relative;overflow: hidden;width: 50vmin;height: 50vmin;display: inline-block;">
+
+            <span [ngStyle]="{color: !confidence?'rgba(204,204,204,.8)':(confidence>=90?'rgba(51,204,51,.8)':(confidence>=80?'rgba(255,204,51,.8)':'rgba(255,51,51,.8)'))}"
+                  style="line-height: 50vmin;font-size: 12vmin;font-weight: bold;color: rgba(204,204,204,.8);-moz-text-shadow: 0 0 2vmin rgba(255,255,255,1);-webkit-text-shadow: 0 0 2vmin rgba(255,255,255,1);text-shadow: 0 0 2vmin rgba(255,255,255,1)">
+                {{confidence&&confidence.split(".")[0]||'0'}}.<span style="font-size: 7.5vmin;">{{confidence&&confidence.split(".")[1]||'00'}}%</span>
+            </span>
+
+            <div style="position: absolute;left: 0;right: 0;top: 0;bottom: 0;">
+                <svg style="width: 100%;height: 100%;" width="512" height="512">
+                    <circle cx="50%" cy="50%" r="40%" stroke-width="10%" stroke="rgba(204,204,204,.25)"
+                            fill="none"></circle>
+                    <circle cx="50%" cy="50%" r="40%" stroke-width="10%" fill="none"
+                            stroke="rgba(204,204,204,.25)"
+                            [attr.stroke]="!confidence?'rgba(204,204,204,.5)':(confidence>=90?'rgba(51,204,51,.75)':(confidence>=80?'rgba(255,204,51,.75)':'rgba(255,51,51,.75)'))"
+                            style=";-webkit-transition: all 600ms;-moz-transition: all 600ms;-ms-transition: all 600ms;-o-transition: all 600ms;transition: all 600ms;"
+                            [attr.stroke-dasharray]="80*3.1415926*(confidence||0)/100+'% 3140%'"></circle>
+                </svg>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div [hidden]="!uploading" class="all-transition folded-corner"
+         style="text-align: center;position: fixed;left: 0;right: 0;top: 0;bottom: 0;background-color: rgba(0,0,0,.35);">
+    </div>
+
+    <button fab fab-center fab-bottom fab-fixed [ngClass]="{'fab-fixed-loading':uploading,'fab-loading':uploading}"
+            class="fab-fixed-transition" (click)="verification()">
+        <ion-icon name="cloud-upload"></ion-icon>
+    </button>
 
 
 </ion-content>

@@ -15,6 +15,13 @@ body {
     }
   }
 
+  .toast-info {
+
+    .toast-wrapper {
+      background: rgba(56, 126, 245, .75);
+    }
+  }
+
   .transparent-loading {
 
     .loading-wrapper {
@@ -35,12 +42,15 @@ body {
     @include all-transition;
   }
 
-  .fab-fixed-loading {
+  .fab-loading {
 
     overflow: visible;
 
-    bottom: 50%;
-    margin-bottom: -28px;
+    &.fab-fixed-loading {
+
+      bottom: 50%;
+      margin-bottom: -28px;
+    }
 
     -webkit-animation: spinner-scale-keyframes 5s ease-in-out 300ms infinite;
     -o-animation: spinner-scale-keyframes 5s ease-in-out 300ms infinite;
@@ -52,7 +62,7 @@ body {
       content: " ";
       position: absolute;
 
-      border: 5px double #fff;
+      border: 5px solid #fff;
 
       -webkit-border-radius: 50%;
       -moz-border-radius: 50%;
