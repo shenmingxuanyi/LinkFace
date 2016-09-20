@@ -58,8 +58,8 @@ export class HomePage {
             .then((imageData)=> {
                 this.imageResize(_image, imageData);
             })
-            .catch(()=> {
-                this.toastMessage("启动相机出现错误");
+            .catch((error)=> {
+                this.toastMessage(JSON.stringify(error));
             });
     }
 
@@ -68,8 +68,8 @@ export class HomePage {
             uri: imageData,
             folderName: 'ImageResize',
             quality: 90,
-            width: 1280,
-            height: 1280,
+            width: 800,
+            height: 800,
             fileName: imageData.substr(imageData.lastIndexOf('/') + 1)
         } as ImageResizerOptions;
 
